@@ -114,11 +114,13 @@ JWT_SECRET=your_jwt_secret_key
 
 🔑 Authentication
 Method Endpoint Description
+
 POST /api/v1/auth/register Register a new user
 POST /api/v1/auth/login Login and get JWT token
 
 📋 Meetings
 Method Endpoint Description
+
 GET /api/v1/meetings List all meetings (requires JWT)
 POST /api/v1/meetings Create and summarize meeting (sync/async)
 GET /api/v1/meetings/{id} Get meeting by ID
@@ -162,14 +164,14 @@ Test meeting endpoints interactively 🎯
 ✅ Project Requirements Met
 Requirement Status Implementation:-
 
-Authentication (Register/Login) ✅ /api/v1/auth/register and /api/v1/auth/login with JWT
-Meeting creation & summarization ✅ /api/v1/meetings (Groq-based summarization)
-Async/Sync job support ✅ Controlled by ENABLE_JOBS flag
-Database Integration ✅ PostgreSQL via Drizzle ORM
-Swagger UI ✅ /docs endpoint
-Error Handling & Logging ✅ Centralized logger.js + Express middleware
-Embeddings (optional) ✅ embedTextIfEnabled() in Groq provider
-Readable, Modular Code ✅ Clear folder structure
+Authentication (Register/Login)         ✅ /api/v1/auth/register and /api/v1/auth/login with JWT
+Meeting creation & summarization        ✅ /api/v1/meetings (Groq-based summarization)
+Async/Sync job support                  ✅ Controlled by ENABLE_JOBS flag
+Database Integration                    ✅ PostgreSQL via Drizzle ORM
+Swagger UI                              ✅ /docs endpoint
+Error Handling & Logging                ✅ Centralized logger.js + Express middleware
+Embeddings (optional)                   ✅ embedTextIfEnabled() in Groq provider
+Readable, Modular Code                  ✅ Clear folder structure
 
 💡 Notes
 
@@ -182,6 +184,8 @@ repo.js in meetings module handles low-level DB operations cleanly.
 The project runs smoothly without Redis or external queues.
 
 ✨ Example Test Data
+
+
 {
 "title": "Marketing Strategy Alignment - Q1 Campaign Planning",
 "transcript": "Attendees: Marketing Head (Tara), Content Lead (Riya), Performance Manager (Dev), Product Marketing (Anil), Design (Irfan). Tara opened by outlining Q1 objectives: increase qualified leads by 25% and boost product awareness through multi-channel campaigns. Riya proposed a new content pillar strategy focusing on case studies and customer storytelling. Dev shared paid performance insights—LinkedIn CTR improved by 0.8%, but CAC rose by 12%. Anil suggested repositioning the product around ‘efficiency and control’ to improve ad resonance. Irfan highlighted design bottlenecks due to overlapping campaign assets; requested clearer prioritization. Risks: content backlog due to late SME inputs and high design load. Decision: pilot two campaign angles (efficiency vs innovation) and evaluate CTR differences before scaling. Action items: Riya to finalize editorial calendar, Dev to update paid dashboard, and Tara to lock Q1 spend allocation by Friday. Next review: Wednesday, 11 AM."
