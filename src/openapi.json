@@ -1,0 +1,242 @@
+{
+  "openapi": "3.0.0",
+  "info": { "title": "Meeting AI API", "version": "1.0.0" },
+  "servers": [{ "url": "http://localhost:8080" }],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Paste as: Bearer <token>"
+      }
+    },
+    "schemas": {
+      "AuthRegister": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "palash.torch@devmail.in"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "mySecret123"
+          }
+        }
+      },
+      "AuthLogin": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "palash.torch@devmail.in"
+          },
+          "password": { "type": "string", "example": "mySecret123" }
+        }
+      },
+      "ActionItem": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "example": "Share notes with team" },
+          "owner": { "type": "string", "example": "Asha" },
+          "due": { "type": "string", "example": "2025-11-15" }
+        }
+      },
+      "MeetingCreate": {
+        "type": "object",
+        "required": ["title", "transcript"],
+        "properties": {
+          "title": { "type": "string", "example": "Q4 Strategy Meeting" },
+          "transcript": {
+            "type": "string",
+            "example": "Rahul discussed next quarter goals..."
+          }
+        }
+      },
+      "Meeting": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "transcript": { "type": "string" },
+          "summary": { "type": "string", "nullable": true },
+          "actionItems": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ActionItem" },
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["processing", "ready", "failed"]
+          },
+          "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "example": {
+          "id": "8c8b4c9b-0a2f-4d7c-8d0d-3f17e8f0e111",
+          "title": "Q4 Strategy Meeting",
+          "transcript": "Rahul discussed next quarter goals...",
+          "summary": "Team aligned on Q4 goals and risks.",
+          "actionItems": [{ "text": "Draft rollback plan", "owner": "Rahul" }],
+          "status": "ready",
+          "createdAt": "2025-11-02T06:40:00.000Z"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/auth/register": {
+      "post": {
+        "summary": "Register user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthRegister" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string", "format": "uuid" },
+                    "email": { "type": "string", "format": "email" }
+                  }
+                }
+              }
+            }
+          },
+          "409": { "description": "Email already exists" }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "summary": "Login and get JWT",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthLogin" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK (returns token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Invalid credentials" }
+        }
+      }
+    },
+    "/api/v1/meetings": {
+      "get": {
+        "summary": "List recent meetings",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Meeting" }
+                    },
+                    "nextCursor": { "type": "string", "nullable": true }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create meeting (sync if jobs disabled, else async)",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/MeetingCreate" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created (sync returns ready; async returns processing)"
+          },
+          "400": { "description": "title & transcript required" }
+        }
+      }
+    },
+    "/api/v1/meetings/{id}": {
+      "get": {
+        "summary": "Get meeting by id",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "in": "query",
+            "name": "auto",
+            "schema": { "type": "string", "enum": ["0", "1"] },
+            "description": "auto=1 → if status=processing/empty, summarize now and return ready"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Meeting",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Meeting" }
+              }
+            }
+          },
+          "404": { "description": "Not found" }
+        }
+      }
+    }
+  }
+}
