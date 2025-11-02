@@ -3,6 +3,13 @@
 A Node.js + Express backend that automatically summarizes meeting transcripts using **Groq LLM** and manages users with JWT authentication.  
 The project supports both **sync** and **async** summary generation and exposes a fully interactive **Swagger UI** for easy API testing.
 
+## 🌍 Live Deployment
+
+- **Base URL:** [https://meeting-ai-backend.onrender.com](https://meeting-ai-backend.onrender.com)
+  
+- **Swagger Docs:** [https://meeting-ai-backend.onrender.com/docs](https://meeting-ai-backend.onrender.com/docs)
+  
+
 ## 🚀 Overview
 
 This backend lets users:
