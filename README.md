@@ -116,14 +116,19 @@ JWT_SECRET=your_jwt_secret_key
 Method Endpoint Description
 
 POST /api/v1/auth/register Register a new user
+
 POST /api/v1/auth/login Login and get JWT token
 
 📋 Meetings
+
 Method Endpoint Description
 
 GET /api/v1/meetings List all meetings (requires JWT)
+
 POST /api/v1/meetings Create and summarize meeting (sync/async)
+
 GET /api/v1/meetings/{id} Get meeting by ID
+
 GET /api/v1/meetings/{id}?auto=1 Re-summarize instantly if pending
 
 🧠 Tech Stack
@@ -188,30 +193,41 @@ The project runs smoothly without Redis or external queues.
 
 {
 "title": "Marketing Strategy Alignment - Q1 Campaign Planning",
-"transcript": "Attendees: Marketing Head (Tara), Content Lead (Riya), Performance Manager (Dev), Product Marketing (Anil), Design (Irfan). Tara opened by outlining Q1 objectives: increase qualified leads by 25% and boost product awareness through multi-channel campaigns. Riya proposed a new content pillar strategy focusing on case studies and customer storytelling. Dev shared paid performance insights—LinkedIn CTR improved by 0.8%, but CAC rose by 12%. Anil suggested repositioning the product around ‘efficiency and control’ to improve ad resonance. Irfan highlighted design bottlenecks due to overlapping campaign assets; requested clearer prioritization. Risks: content backlog due to late SME inputs and high design load. Decision: pilot two campaign angles (efficiency vs innovation) and evaluate CTR differences before scaling. Action items: Riya to finalize editorial calendar, Dev to update paid dashboard, and Tara to lock Q1 spend allocation by Friday. Next review: Wednesday, 11 AM."
+
+"transcript": "Attendees: Marketing Head (Tara), Content Lead (Riya), Performance Manager (Dev), Product Marketing (Anil), Design (Irfan). Tara opened by outlining Q1 objectives: increase qualified leads by 25% and boost product awareness through multi-channel campaigns. Riya proposed a new content pillar strategy focusing on case studies and customer storytelling. Dev shared paid performance insights—LinkedIn CTR improved by 0.8%, but CAC rose by 12%. Anil suggested repositioning the product around ‘efficiency and control’ to improve ad resonance. Irfan highlighted design bottlenecks due to overlapping campaign assets; requested clearer prioritization. Risks: content backlog due to late SME inputs and high design load. Decision: pilot two campaign angles (efficiency vs innovation) and evaluate CTR differences before scaling.
+
+Action items: Riya to finalize editorial calendar, Dev to update paid dashboard, and Tara to lock Q1 spend allocation by Friday. Next review: Wednesday, 11 AM."
 }
 
 Expected Output
 
 {
 "id": "f7280800-e26c-429d-982e-bf718dcf08d8",
+
 "title": "Marketing Strategy Alignment - Q1 Campaign Planning",
+
 "transcript": "Attendees: Marketing Head (Tara), Content Lead (Riya), Performance Manager (Dev), Product Marketing (Anil), Design (Irfan). Tara opened by outlining Q1 objectives: increase qualified leads by 25% and boost product awareness through multi-channel campaigns. Riya proposed a new content pillar strategy focusing on case studies and customer storytelling. Dev shared paid performance insights—LinkedIn CTR improved by 0.8%, but CAC rose by 12%. Anil suggested repositioning the product around ‘efficiency and control’ to improve ad resonance. Irfan highlighted design bottlenecks due to overlapping campaign assets; requested clearer prioritization. Risks: content backlog due to late SME inputs and high design load. Decision: pilot two campaign angles (efficiency vs innovation) and evaluate CTR differences before scaling. Action items: Riya to finalize editorial calendar, Dev to update paid dashboard, and Tara to lock Q1 spend allocation by Friday. Next review: Wednesday, 11 AM.",
+
 "summary": "The team aligned on Q1 marketing objectives, including a 25% increase in qualified leads and multi-channel campaigns. They decided to pilot two campaign angles (efficiency and innovation) to evaluate CTR differences. Key context includes a content backlog and design bottlenecks.",
+
 "actionItems": [
+
 {
 "text": "Riya to finalize editorial calendar",
 "owner": "Riya"
 },
+
 {
 "text": "Dev to update paid dashboard",
 "owner": "Dev"
 },
+
 {
 "due": "2023-03-03",
 "text": "Tara to lock Q1 spend allocation by Friday",
 "owner": "Tara"
 }
+
 ],
 "status": "ready",
 "createdAt": "2025-11-02T13:24:08.083Z"
