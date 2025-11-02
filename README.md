@@ -113,6 +113,7 @@ JWT_SECRET=your_jwt_secret_key
 🧭 API Endpoints Summary
 
 🔑 Authentication
+
 Method Endpoint Description
 
 POST /api/v1/auth/register Register a new user
@@ -146,10 +147,13 @@ Swagger UI – API documentation & live testing
 Pino Logger – Structured logging
 
 🧪 Running the Project
+
 1️⃣ Install dependencies
+
 npm install
 
 2️⃣ Start the dev server
+
 npm run dev
 
 3️⃣ Open Swagger
@@ -167,15 +171,23 @@ Authorize via the Swagger “Authorize” button
 Test meeting endpoints interactively 🎯
 
 ✅ Project Requirements Met
+
 Requirement Status Implementation:-
 
 Authentication (Register/Login)         ✅ /api/v1/auth/register and /api/v1/auth/login with JWT
+
 Meeting creation & summarization        ✅ /api/v1/meetings (Groq-based summarization)
+
 Async/Sync job support                  ✅ Controlled by ENABLE_JOBS flag
+
 Database Integration                    ✅ PostgreSQL via Drizzle ORM
+
 Swagger UI                              ✅ /docs endpoint
+
 Error Handling & Logging                ✅ Centralized logger.js + Express middleware
+
 Embeddings (optional)                   ✅ embedTextIfEnabled() in Groq provider
+
 Readable, Modular Code                  ✅ Clear folder structure
 
 💡 Notes
