@@ -1,6 +1,6 @@
 # 🧠 Meeting AI Backend
 
-A Node.js + Express backend that automatically summarizes meeting transcripts using **Groq LLM** and manages users with JWT authentication.  
+A **Node.js + Express** backend that automatically summarizes meeting transcripts using **Groq LLM** and manages users with JWT authentication.  
 The project supports both **sync** and **async** summary generation and exposes a fully interactive **Swagger UI** for easy API testing.
 
 ## 🌍 Live Deployment
@@ -105,6 +105,133 @@ src/
 
 ---
 
+## 🚀 How to Test the API on Production (Swagger UI)
+
+**You can easily test all endpoints using the live Swagger UI hosted on Render.**
+
+🌐 URL: https://meeting-ai-backend.onrender.com/docs
+
+🧭 Step-by-Step Guide
+
+1️⃣ **Open the Docs**
+
+Visit → https://meeting-ai-backend.onrender.com/docs
+
+You’ll see grouped sections for Auth and Meetings endpoints.
+
+2️⃣ **Register a New User**
+
+Expand POST → /api/v1/auth/register
+
+Click Try it out
+
+Paste the sample body below (or use your own email):
+
+{
+  "email": "support.desk@company.net",
+  
+  "password": "TempLogin$2024"
+}
+
+
+Click Execute
+
+✅ Expected: 201 Created with a response like
+
+{ "id": "uuid", "email": "support.desk@company.net" }
+
+
+3️⃣ **Login to Get Your JWT**
+
+Expand POST → /api/v1/auth/login
+
+Click Try it out
+
+Paste the same email/password:
+
+{
+  "email": "support.desk@company.net",
+  "password": "TempLogin$2024"
+}
+
+Click Execute
+
+✅ Copy the token from the response (a long string of letters/numbers).
+
+4️⃣ **Authorize with the JWT**
+
+Click the Authorize 🔒 button at the top-right.
+
+In the BearerAuth box, paste only the raw token (❌ don’t add “Bearer”).
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...<snip>...
+
+
+Click Authorize → Close.
+
+Swagger will now include this token in all protected requests.
+
+5️⃣ **Create a Meeting**
+
+Expand POST → /api/v1/meetings
+
+Click Try it out
+
+Paste this body:
+
+{
+  "title": "Client Onboarding Feedback Session",
+  
+  "transcript": "Alex: 'Okay, let's review the onboarding process for the new client, 'GlobalFin'. Maria, how did the data import go?' Maria: 'The import was rough. Their files were poorly formatted, and we spent 20 hours just on cleanup. We need a stricter validation step before we accept their data next time.' Ben: 'I agree. On the training side, their team was engaged but very new to our platform. They asked for more 'hands-on' examples. The standard demo video wasn't enough.' Alex: 'Good feedback. So, action items: Maria, draft a 'Data Pre-flight Checklist' for new clients. Ben, can you create two advanced workshop modules for the finance and ops teams? I'll take this feedback to the account manager to reset expectations on future data loads.'"
+}
+
+
+Click Execute
+
+✅ Expected: 201 Created with a JSON containing a meeting id.
+Save that id.
+
+6️⃣ **Get a Meeting by ID**
+
+Expand GET → /api/v1/meetings/{id}
+
+Click Try it out
+
+Paste the id from the previous step (e.g. 8c8b4c9b-...)
+
+(Optional) Add **auto = 1** to force summary generation if still processing.
+
+Click Execute
+
+✅ Expected: a JSON meeting with summary, actionItems, status, etc.
+
+7️⃣ **List Recent Meetings**
+
+Expand GET → /api/v1/meetings
+
+Click Try it out
+
+Click Execute
+
+✅ Expected: a list of meetings with summaries and timestamps.
+
+## 💡 Tips & Troubleshooting
+
+In the Authorize popup, paste only the token, not "Bearer <token>".
+
+If you get 401 unauthorized → re-authorize with a fresh token.
+
+If you see "invalid token" → click the lock icon, Logout, and re-Authorize.
+
+Always test in this order:
+Register → Login → Authorize → Create Meeting → Get Meeting
+
+> **:warning: WARNING: Do Not Use Example Data**
+>
+> The JSON examples provided in this documentation (such as for user credentials or meeting transcripts) are for demonstration purposes only.
+>
+> **Do not** copy these placeholder emails, passwords, or other sample data for use in your application, testing, or production environments. You must replace them with your own valid credentials and data.
+
 ## 🧩 How It Works
 
 1. **User Flow**
@@ -152,9 +279,9 @@ GROQ_API_KEY=your_groq_api_key_here
 JWT_SECRET=your_jwt_secret_key
 ```
 
-🧭 API Endpoints Summary
+## 🧭 API Endpoints Summary
 
-🔑 Authentication
+🔑 **Authentication**
 
 Method Endpoint Description
 
@@ -162,7 +289,7 @@ Method Endpoint Description
 
 2.  POST /api/v1/auth/login Login and get JWT token
 
-📋 Meetings
+📋 **Meetings**
 
 Method Endpoint Description
 
@@ -174,7 +301,7 @@ Method Endpoint Description
 
 4.  GET /api/v1/meetings/{id}?auto=1 Re-summarize instantly if pending
 
-🧠 Tech Stack
+🧠 **Tech Stack**
 
 Node.js + Express.js – REST API framework
 
@@ -186,9 +313,7 @@ JWT Auth (bcrypt + jsonwebtoken) – Secure login
 
 Swagger UI – API documentation & live testing
 
-Pino Logger – Structured logging
-
-🧪 Running the Project
+## 🧪 Running the Project
 
 1️⃣ Install dependencies
 
@@ -212,7 +337,7 @@ Then:
 
 4.  Test meeting endpoints interactively 🎯
 
-✅ Project Requirements Met
+## ✅ Project Requirements Met
 
 Requirement Status Implementation:-
 
@@ -232,7 +357,7 @@ Requirement Status Implementation:-
 
 8.  Readable, Modular Code                  ✅ Clear folder structure
 
-💡 Notes
+## 💡 Notes
 
 Async jobs are optional (ENABLE_JOBS=false means sync mode).
 
@@ -242,7 +367,7 @@ repo.js in meetings module handles low-level DB operations cleanly.
 
 The project runs smoothly without Redis or external queues.
 
-✨ Example Test Data
+## ✨ Example Test Data
 
 
 {
