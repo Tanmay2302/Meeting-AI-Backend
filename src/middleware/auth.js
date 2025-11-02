@@ -5,6 +5,7 @@ import { env } from "../config/env.js";
 import { db } from "../db/client.js";
 import { users } from "../db/schema.js";
 import { eq } from "drizzle-orm";
+import { randomUUID } from "node:crypto";
 
 export function signJwt(payload) {
   return jwt.sign(payload, env.JWT_SECRET, { expiresIn: "7d" });
@@ -28,28 +29,22 @@ export async function registerUser({ email, password }) {
 
   const normEmail = String(email).trim().toLowerCase();
   const passwordHash = await bcrypt.hash(password, 10);
+  const id = randomUUID(); // ✅ generate UUID in app (no DB extension needed)
 
   try {
     const [u] = await db
       .insert(users)
-      .values({ email: normEmail, passwordHash })
+      .values({ id, email: normEmail, passwordHash })
       .returning();
 
     return { id: u.id, email: u.email };
   } catch (err) {
-    // Only map actual UNIQUE violations (Postgres 23505) to 409.
-    // Log full detail so we can distinguish other issues in Render logs.
     const code = err?.code;
-    const detail = err?.detail;
-    const constraint = err?.constraint;
-    console.error("[registerUser] insert failed", { code, detail, constraint });
-
     if (code === "23505") {
-      // Optional: additionally check constraint name if available
-      return Promise.reject(Object.assign(new Error("email already exists"), { status: 409 }));
+      const e = new Error("email already exists");
+      e.status = 409;
+      throw e;
     }
-
-    // Re-throw anything else so you see the real 500 + log context
     throw err;
   }
 }
