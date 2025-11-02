@@ -1,7 +1,10 @@
 {
   "openapi": "3.0.0",
   "info": { "title": "Meeting AI API", "version": "1.0.0" },
-  "servers": [{ "url": "http://localhost:8080" }],
+  "servers": [
+    { "url": "/" },
+    { "url": "http://localhost:8080" }
+  ],
   "components": {
     "securitySchemes": {
       "BearerAuth": {

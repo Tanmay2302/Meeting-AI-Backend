@@ -29,13 +29,29 @@ export async function registerUser({ email, password }) {
   const normEmail = String(email).trim().toLowerCase();
   const passwordHash = await bcrypt.hash(password, 10);
 
-  // Will throw on duplicate because of UNIQUE(email)
-  const [u] = await db
-    .insert(users)
-    .values({ email: normEmail, passwordHash })
-    .returning();
+  try {
+    const [u] = await db
+      .insert(users)
+      .values({ email: normEmail, passwordHash })
+      .returning();
 
-  return { id: u.id, email: u.email };
+    return { id: u.id, email: u.email };
+  } catch (err) {
+    // Only map actual UNIQUE violations (Postgres 23505) to 409.
+    // Log full detail so we can distinguish other issues in Render logs.
+    const code = err?.code;
+    const detail = err?.detail;
+    const constraint = err?.constraint;
+    console.error("[registerUser] insert failed", { code, detail, constraint });
+
+    if (code === "23505") {
+      // Optional: additionally check constraint name if available
+      return Promise.reject(Object.assign(new Error("email already exists"), { status: 409 }));
+    }
+
+    // Re-throw anything else so you see the real 500 + log context
+    throw err;
+  }
 }
 
 export async function loginUser({ email, password }) {
@@ -43,7 +59,6 @@ export async function loginUser({ email, password }) {
 
   const normEmail = String(email).trim().toLowerCase();
 
-  // Use a plain select to be 100% sure we get passwordHash
   const rows = await db
     .select({
       id: users.id,
@@ -55,10 +70,10 @@ export async function loginUser({ email, password }) {
     .limit(1);
 
   const u = rows[0];
-  if (!u) throw new Error("invalid credentials"); // email not found
+  if (!u) throw new Error("invalid credentials");
 
   const ok = await bcrypt.compare(password, u.passwordHash);
-  if (!ok) throw new Error("invalid credentials"); // wrong password
+  if (!ok) throw new Error("invalid credentials");
 
   const token = signJwt({ sub: u.id, email: u.email });
   return { token };
