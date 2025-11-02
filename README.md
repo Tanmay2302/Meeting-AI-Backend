@@ -37,7 +37,8 @@ src/
 
 │ ├── schema.js # Table schemas for meetings, users, embeddings
 
-│
+│ ├── bootstrap.js # ensures all required database tables exist automatically on startup (creates users, meetings, and embeddings tables if missing)
+ 
 ├── lib/
 
 │ ├── ai/
