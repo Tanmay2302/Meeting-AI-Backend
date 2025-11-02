@@ -228,7 +228,7 @@ Register → Login → Authorize → Create Meeting → Get Meeting
 
 > **:warning: WARNING: Do Not Use Example Data**
 >
-> The JSON examples provided in this documentation (such as for user credentials or meeting transcripts) are for demonstration purposes only.
+> The JSON examples provided in the Swagger UI (you can see example when you open swagger ui, such as for user credentials or meeting transcripts) are for demonstration purposes only.
 >
 > **Do not** copy these placeholder emails, passwords, or other sample data for use in your application, testing, or production environments. You must replace them with your own valid credentials and data.
 
