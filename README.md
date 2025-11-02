@@ -18,45 +18,79 @@ This backend lets users:
 ## 📂 Folder Structure
 
 src/
+
 ├── config/
-│ └── env.js # Loads environment variables
+
+│ ├── env.js # Loads environment variables
+
 │
 ├── db/
+
 │ ├── client.js # PostgreSQL + Drizzle ORM client
+
 │ ├── schema.js # Table schemas for meetings, users, embeddings
+
 │
 ├── lib/
+
 │ ├── ai/
+
 │ │ ├── parse.js # Handles JSON-safe AI responses
-│ │ ├── prompts.js # LLM prompt template
-│ │ └── provider.js # Groq model integration (summary + embeddings)
+
+│ │ ├── prompts.js # LLM prompt templates
+
+│ │ ├── provider.js # Groq model integration (summary + embeddings)
+
 │ ├── logger.js # Centralized logging with timestamps
+
+│
 │ ├── queue/
+
 │ │ ├── queue.js # In-memory BullMQ-style queue (for async jobs)
-│ │ └── jobs.js # Job handler for summarization
+
+│ │ ├── jobs.js # Job handler for summarization
+
 │
 ├── middleware/
+
 │ ├── auth.js # JWT handling & route protection
+
 │ ├── errors.js # Error middleware
-│ └── validate.js # Input validation
+
+│ ├── validate.js # Input validation middleware
+
 │
 ├── modules/
+
 │ ├── auth/
+
 │ │ ├── controller.js # Register & login logic
+
 │ │ ├── routes.js # /auth/register, /auth/login endpoints
-│ │ ├── service.js # Database-level auth operations
-│ │ └── validators.js # Joi/Zod schema validation
-│ └── meetings/
-│ ├── controller.js # Routes handler (POST, GET, etc.)
-│ ├── repo.js # Direct DB operations for meetings
-│ ├── routes.js # /api/v1/meetings endpoints
-│ ├── service.js # Main logic for summary creation
-│ └── validators.js # Input validation for meetings
-│
-│── openapi.json # Swagger API definition
-│
+
+│ │ ├── service.js # Database-level operations for auth
+
+│ │ ├── validators.js # Joi/Zod schema validation
+
+
+│ ├── meetings/
+
+│ │ ├── controller.js # Route handler (POST, GET, etc.)
+
+│ │ ├── repo.js # Direct DB operations for meetings
+
+│ │ ├── routes.js # /api/v1/meetings endpoints
+
+│ │ ├── service.js # Logic for summary creation
+
+│ │ ├── validators.js # Input validation for meetings
+
+
+├── openapi.json # Swagger API definition
+
 ├── index.js # Main server entry (sets up routes, swagger, queue)
-└── drizzle.config.js # Drizzle ORM config
+
+└── drizzle.config.js # Drizzle ORM configuration
 
 > ✅ **Note:**  
 > Our async queue is handled internally (lightweight version for local jobs).
@@ -207,8 +241,6 @@ The project runs smoothly without Redis or external queues.
 "title": "Marketing Strategy Alignment - Q1 Campaign Planning",
 
 "transcript": "Attendees: Marketing Head (Tara), Content Lead (Riya), Performance Manager (Dev), Product Marketing (Anil), Design (Irfan). Tara opened by outlining Q1 objectives: increase qualified leads by 25% and boost product awareness through multi-channel campaigns. Riya proposed a new content pillar strategy focusing on case studies and customer storytelling. Dev shared paid performance insights—LinkedIn CTR improved by 0.8%, but CAC rose by 12%. Anil suggested repositioning the product around ‘efficiency and control’ to improve ad resonance. Irfan highlighted design bottlenecks due to overlapping campaign assets; requested clearer prioritization. Risks: content backlog due to late SME inputs and high design load. Decision: pilot two campaign angles (efficiency vs innovation) and evaluate CTR differences before scaling.
-
-Action items: Riya to finalize editorial calendar, Dev to update paid dashboard, and Tara to lock Q1 spend allocation by Friday. Next review: Wednesday, 11 AM."
 }
 
 Expected Output
