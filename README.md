@@ -121,7 +121,7 @@ src/
    - The summary and action items are stored in the database.
 
 3. **Swagger UI**
-   - Runs at: **[http://localhost:8080/docs](http://localhost:8080/docs)**
+   - Runs at: **[http://localhost:8080/docs](http://localhost:8080/docs)** locally  and  **[https://meeting-ai-backend.onrender.com/docs]( https://meeting-ai-backend.onrender.com/docs)** in deployment
    - Lets you test all endpoints visually.
    - Use **Authorize → Bearer Token** (paste token from `/api/v1/auth/login`).
 
