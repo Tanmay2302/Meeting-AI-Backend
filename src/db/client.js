@@ -1,7 +1,7 @@
 // src/db/client.js
 import { Pool } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
-import pino from "pino";
+// import pino from "pino";
 import { env } from "../config/env.js";
 
 const logger = pino();
