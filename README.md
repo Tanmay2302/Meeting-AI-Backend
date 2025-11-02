@@ -150,21 +150,21 @@ JWT_SECRET=your_jwt_secret_key
 
 Method Endpoint Description
 
-POST /api/v1/auth/register Register a new user
+1.  POST /api/v1/auth/register Register a new user
 
-POST /api/v1/auth/login Login and get JWT token
+2.  POST /api/v1/auth/login Login and get JWT token
 
 📋 Meetings
 
 Method Endpoint Description
 
-GET /api/v1/meetings List all meetings (requires JWT)
+1.  GET /api/v1/meetings List all meetings (requires JWT)
 
-POST /api/v1/meetings Create and summarize meeting (sync/async)
+2.  POST /api/v1/meetings Create and summarize meeting (sync/async)
 
-GET /api/v1/meetings/{id} Get meeting by ID
+3.  GET /api/v1/meetings/{id} Get meeting by ID
 
-GET /api/v1/meetings/{id}?auto=1 Re-summarize instantly if pending
+4.  GET /api/v1/meetings/{id}?auto=1 Re-summarize instantly if pending
 
 🧠 Tech Stack
 
@@ -196,33 +196,33 @@ Visit → http://localhost:8080/docs
 
 Then:
 
-Register a user (/api/v1/auth/register)
+1.  Register a user (/api/v1/auth/register)
 
-Login to get your JWT (/api/v1/auth/login)
+2.  Login to get your JWT (/api/v1/auth/login)
 
-Authorize via the Swagger “Authorize” button
+3.  Authorize via the Swagger “Authorize” button
 
-Test meeting endpoints interactively 🎯
+4.  Test meeting endpoints interactively 🎯
 
 ✅ Project Requirements Met
 
 Requirement Status Implementation:-
 
-Authentication (Register/Login)         ✅ /api/v1/auth/register and /api/v1/auth/login with JWT
+1.  Authentication (Register/Login)         ✅ /api/v1/auth/register and /api/v1/auth/login with JWT
 
-Meeting creation & summarization        ✅ /api/v1/meetings (Groq-based summarization)
+2.  Meeting creation & summarization        ✅ /api/v1/meetings (Groq-based summarization)
 
-Async/Sync job support                  ✅ Controlled by ENABLE_JOBS flag
+3.  Async/Sync job support                  ✅ Controlled by ENABLE_JOBS flag
 
-Database Integration                    ✅ PostgreSQL via Drizzle ORM
+4.  Database Integration                    ✅ PostgreSQL via Drizzle ORM
 
-Swagger UI                              ✅ /docs endpoint
+5.  Swagger UI                              ✅ /docs endpoint
 
-Error Handling & Logging                ✅ Centralized logger.js + Express middleware
+6.  Error Handling & Logging                ✅ Centralized logger.js + Express middleware
 
-Embeddings (optional)                   ✅ embedTextIfEnabled() in Groq provider
+7.  Embeddings                              ✅ embedTextIfEnabled() in Groq provider
 
-Readable, Modular Code                  ✅ Clear folder structure
+8.  Readable, Modular Code                  ✅ Clear folder structure
 
 💡 Notes
 
