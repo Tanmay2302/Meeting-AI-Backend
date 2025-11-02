@@ -1,6 +1,6 @@
 # 🧠 Meeting AI Backend
 
-A **Node.js + Express** backend that automatically summarizes meeting transcripts using **Groq LLM** and manages users with JWT authentication.  
+A **Node.js + Express** backend that automatically summarizes meeting transcripts using **Groq LLM** and manages users with **PostgreSQL and JWT authentication**.  
 The project supports both **sync** and **async** summary generation and exposes a fully interactive **Swagger UI** for easy API testing.
 
 ## 🌍 Live Deployment
@@ -15,7 +15,7 @@ The project supports both **sync** and **async** summary generation and exposes 
 This backend lets users:
 
 - Register and log in securely using email & password (with JWT auth)
-- Upload or post meeting transcripts
+- Upload or post meeting transcripts, stores in PostgreSQL
 - Automatically generate meeting summaries and action items using Groq API
 - Retrieve and view all meetings or a specific meeting
 - Explore and test every endpoint visually using Swagger UI
