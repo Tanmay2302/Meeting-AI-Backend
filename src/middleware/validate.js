@@ -1,4 +1,4 @@
-// If you ever need route-level schema validation middleware
+
 export const validate = (schema) => (req, res, next) => {
   try {
     req.validated = schema.parse({
