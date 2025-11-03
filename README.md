@@ -5,7 +5,6 @@ The project supports both **sync** and **async** summary generation and exposes 
 
 ## 🌍 Live Deployment
 
-- **Base URL:** [https://meeting-ai-backend.onrender.com](https://meeting-ai-backend.onrender.com)
   
 - **Swagger Docs:** [https://meeting-ai-backend.onrender.com/docs](https://meeting-ai-backend.onrender.com/docs)
   
