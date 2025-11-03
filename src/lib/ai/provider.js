@@ -1,4 +1,4 @@
-// src/lib/ai/provider.js
+
 import { env } from "../../config/env.js";
 import { SUMMARIZE_PROMPT } from "./prompts.js";
 import { safeParseAIJson } from "./parse.js";
@@ -7,7 +7,6 @@ import { meetingEmbeddings } from "../../db/schema.js";
 import Groq from "groq-sdk";
 import { logger } from "../logger.js";
 
-/** ---------- helpers ---------- */
 
 function assertKey() {
   if (env.AI_PROVIDER !== "mock" && env.AI_PROVIDER !== "groq") {
@@ -18,7 +17,7 @@ function assertKey() {
   }
 }
 
-// try to recover JSON if model adds prose
+
 const extractJsonBlock = (text) => {
   const s = text.indexOf("{");
   const e = text.lastIndexOf("}");
@@ -26,10 +25,10 @@ const extractJsonBlock = (text) => {
   return text.slice(s, e + 1);
 };
 
-/** ---------- summarization ---------- */
+
 
 export async function summarizeTranscript({ title, transcript }) {
-  // local/dev mock: always succeeds without keys
+  
   if (env.AI_PROVIDER === "mock") {
     const s =
       transcript
@@ -42,7 +41,7 @@ export async function summarizeTranscript({ title, transcript }) {
     };
   }
 
-  // groq path
+ 
   assertKey();
   const prompt = SUMMARIZE_PROMPT({ title, transcript });
 
@@ -67,16 +66,12 @@ export async function summarizeTranscript({ title, transcript }) {
   }
 }
 
-/** ---------- embeddings (non-fatal; mock) ----------
- * We store a deterministic mock vector so your feature works
- * without requiring a separate embeddings API/infra.
- * If you later want a real embedding model, replace the vec section.
- */
+
 export async function embedTextIfEnabled(meetingId, text) {
   if (!env.ENABLE_EMBEDDINGS) return;
 
   try {
-    // simple deterministic mock vector (portable; no pgvector)
+   
     const vec = Array.from(text.slice(0, 128)).map(
       (c) => (c.charCodeAt(0) % 97) / 97
     );
@@ -94,7 +89,7 @@ export async function embedTextIfEnabled(meetingId, text) {
       model: modelName,
     });
   } catch (err) {
-    // NEVER fail the job because of embeddings
+  
     logger.warn("embedTextIfEnabled failed (non-fatal)", {
       meetingId,
       err: String(err),
