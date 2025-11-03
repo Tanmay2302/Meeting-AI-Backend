@@ -1,4 +1,4 @@
-// src/modules/meetings/service.js
+
 import { db } from "../../db/client.js";
 import { meetings } from "../../db/schema.js";
 import {
@@ -11,9 +11,6 @@ import { env } from "../../config/env.js";
 import { logger } from "../../lib/logger.js";
 import { eq, desc } from "drizzle-orm";
 
-// ───────────────────────────────────────────────
-// List meetings (latest first)
-// ───────────────────────────────────────────────
 export async function listMeetings({ limit = 20 }) {
   const rows = await db
     .select()
@@ -23,9 +20,7 @@ export async function listMeetings({ limit = 20 }) {
   return { items: rows, nextCursor: null };
 }
 
-// ───────────────────────────────────────────────
-// Get meeting (with ?auto=1 fallback)
-// ───────────────────────────────────────────────
+
 export async function getMeeting(id, { auto } = {}) {
   const rows = await db
     .select()
@@ -38,7 +33,6 @@ export async function getMeeting(id, { auto } = {}) {
   const shouldAuto =
     typeof auto === "boolean" ? auto : env.AUTO_SUMMARIZE_ON_GET;
 
-  // Auto-fallback summarization
   if (shouldAuto && (row.status === "processing" || row.summary == null)) {
     logger.info("auto-summarize fallback triggered", { meetingId: id });
 
@@ -66,9 +60,7 @@ export async function getMeeting(id, { auto } = {}) {
   return row;
 }
 
-// ───────────────────────────────────────────────
-// Create meeting (async if ENABLE_JOBS=true)
-// ───────────────────────────────────────────────
+
 export async function createMeeting({ title, transcript }) {
   const [created] = await db
     .insert(meetings)
@@ -79,7 +71,7 @@ export async function createMeeting({ title, transcript }) {
     })
     .returning();
 
-  // ── Sync summarization ─────────────────────────
+ 
   if (!env.ENABLE_JOBS) {
     const { summary, action_items } = await summarizeTranscript({
       title,
@@ -107,7 +99,6 @@ export async function createMeeting({ title, transcript }) {
   return { meeting: updated, processing: false };
 }
 
-// Enqueue background job safely
 const jobId = await enqueueSummarizeMeeting(created.id);
 logger.debug("job enqueued (service)", { meetingId: created.id, jobId });
 
@@ -121,9 +112,7 @@ return {
   processing: true,
 };
 
-// ───────────────────────────────────────────────
-// Force summarize (manual trigger)
-// ───────────────────────────────────────────────
+
 export async function forceSummarize(meetingId) {
   const rows = await db
     .select()
