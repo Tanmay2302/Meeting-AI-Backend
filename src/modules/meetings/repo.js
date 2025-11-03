@@ -23,7 +23,7 @@ export async function insertMeeting({
 }
 
 export async function semanticSearchMeetings({ queryVector, limit = 10 }) {
-  // queryVector is number[]; we’ll use the same literal builder
+
   const literal = `[${queryVector.join(",")}]`;
   const res = await db.execute(sql`
     SELECT m.id, m.title, m.summary, me.embedding_vec
@@ -58,7 +58,7 @@ export async function getMeetingById(id) {
 }
 
 export async function listMeetings({ limit = 20, cursor }) {
-  // simple keyset pagination by id
+ 
   const where = cursor ? lt(meetings.id, cursor) : undefined;
   const rows = await db
     .select()
