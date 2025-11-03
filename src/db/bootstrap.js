@@ -1,11 +1,8 @@
-// src/db/bootstrap.js
+
 import { pool } from "./client.js";
 import { logger } from "../lib/logger.js";
 
-/**
- * Create tables if they don't exist, using NO uuid extensions/defaults.
- * We generate UUIDs in the app (crypto.randomUUID()) for portability.
- */
+
 export async function ensureDatabase() {
   const statements = [
     // users table: NO gen_random_uuid() default
