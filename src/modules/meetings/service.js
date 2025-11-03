@@ -1,4 +1,4 @@
-// src/modules/meetings/service.js
+
 import { db } from "../../db/client.js";
 import { meetings } from "../../db/schema.js";
 import {
@@ -58,7 +58,7 @@ export async function getMeeting(id, { auto = false } = {}) {
 }
 
 export async function createMeeting({ title, transcript }) {
-  const id = randomUUID(); // ✅ generate UUID in app
+  const id = randomUUID(); 
 
   const [created] = await db
     .insert(meetings)
